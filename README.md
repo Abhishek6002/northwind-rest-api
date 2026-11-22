@@ -1,6 +1,7 @@
+
 # Northwind REST API
 
-A RESTful API built with Python Flask to manage the Northwind MySQL database.
+A RESTful API built using Python Flask to manage the Northwind MySQL database. This project demonstrates CRUD operations, database integration, data validation, layered architecture, unit testing, and automated CI using GitHub Actions.
 
 ## Tech Stack
 
@@ -8,26 +9,32 @@ A RESTful API built with Python Flask to manage the Northwind MySQL database.
 - **Framework:** Flask
 - **Database:** MySQL
 - **ORM:** Flask-SQLAlchemy
-- **Validation and serialization:** Marshmallow
+- **Validation:** Marshmallow
 - **Testing:** Pytest
-- **Version control:** Git and GitHub
+- **Version Control:** Git and GitHub
+- **CI/CD:** GitHub Actions (Continuous Integration)
 
 ## Features
 
-- Create, retrieve, and update customers
-- Create, retrieve, and update products
-- Create, retrieve, and update orders
-- Retrieve a customer's order history, including order details and product information
-- Validate incoming request data with Marshmallow schemas
-- Use SQLAlchemy ORM for database operations
-- Organize the application into controller, model, schema, and service layers
-- Write application logs to `logs/app.log`
-- Test controller behavior with Pytest and mocked service calls
+- Customer CRUD operations
+- Product CRUD operations
+- Order CRUD operations
+- Retrieve complete customer order history
+- View order details and associated product information
+- Input validation using Marshmallow
+- Database operations using SQLAlchemy ORM
+- Layered MVC-style architecture
+- Application logging
+- Unit testing using Pytest and mocking
+- Automated test execution using GitHub Actions
 
 ## Project Structure
 
 ```text
 northwind_rest_api/
+├── .github/
+│   └── workflows/
+│       └── tests.yml
 ├── app/
 │   ├── controllers/
 │   │   ├── customer_controller.py
@@ -54,7 +61,6 @@ northwind_rest_api/
 │   ├── test_customer_controller.py
 │   ├── test_product_controller.py
 │   └── test_order_controller.py
-├── logs/
 ├── .gitignore
 ├── requirements.txt
 ├── run.py
@@ -63,37 +69,37 @@ northwind_rest_api/
 
 ## API Endpoints
 
-### Customers
+### Customer Endpoints
 
-| HTTP method | Endpoint | Description |
+| Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/customers/` | Retrieve all customers |
-| GET | `/api/customers/<customer_id>` | Retrieve a customer by ID |
+| GET | `/api/customers/<customer_id>` | Retrieve customer by ID |
 | POST | `/api/customers/` | Create a customer |
-| PUT | `/api/customers/<customer_id>` | Update a customer |
-| GET | `/api/customers/<customer_id>/order-history` | Retrieve a customer's orders and order details |
+| PUT | `/api/customers/<customer_id>` | Update customer details |
+| GET | `/api/customers/<customer_id>/order-history` | Retrieve customer order history |
 
-### Products
+### Product Endpoints
 
-| HTTP method | Endpoint | Description |
+| Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/products/` | Retrieve all products |
-| GET | `/api/products/<product_id>` | Retrieve a product by ID |
+| GET | `/api/products/<product_id>` | Retrieve product by ID |
 | POST | `/api/products/` | Create a product |
-| PUT | `/api/products/<product_id>` | Update a product |
+| PUT | `/api/products/<product_id>` | Update product details |
 
-### Orders
+### Order Endpoints
 
-| HTTP method | Endpoint | Description |
+| Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/orders/` | Retrieve all orders |
-| GET | `/api/orders/<order_id>` | Retrieve an order by ID |
+| GET | `/api/orders/<order_id>` | Retrieve order by ID |
 | POST | `/api/orders/` | Create an order |
-| PUT | `/api/orders/<order_id>` | Update an order |
+| PUT | `/api/orders/<order_id>` | Update order details |
 
 ## Application Architecture
 
-The application uses a layered MVC-style structure:
+The project follows a layered MVC-style architecture.
 
 ```text
              HTTP Request
@@ -114,85 +120,194 @@ The application uses a layered MVC-style structure:
                 MySQL
 ```
 
-- **Controllers:** Handle incoming HTTP requests and return HTTP responses.
+### Layer Responsibilities
+
+- **Controllers:** Handle HTTP requests and responses.
 - **Models:** Represent database tables and relationships.
-- **Schemas:** Validate incoming data and serialize response data.
-- **Services:** Contain database operations and application logic.
+- **Schemas:** Validate incoming data and serialize responses.
+- **Services:** Handle business logic and database operations.
 - **Tests:** Verify controller behavior using mocked service methods.
-
-## Prerequisites
-
-- Python installed
-- MySQL Server installed and running
-- The Northwind database imported into MySQL
 
 ## Installation and Setup
 
-### 1. Clone the repository
+### Prerequisites
 
-```bash
-git clone YOUR_REPOSITORY_URL
+Install the following before running the application:
+
+- Python 3.12 or compatible version
+- MySQL Server
+- MySQL Workbench (recommended)
+- Git
+
+You also need the Northwind sample database imported into MySQL.
+
+### Step 1: Clone the Repository
+
+```powershell
+git clone YOUR_GITHUB_REPOSITORY_URL
 ```
 
-Replace `YOUR_REPOSITORY_URL` with the HTTPS URL of your GitHub repository.
-
-### 2. Navigate to the project directory
+Navigate into the project:
 
 ```powershell
 cd northwind_rest_api
 ```
 
-### 3. Create a virtual environment
+Replace `YOUR_GITHUB_REPOSITORY_URL` with the actual GitHub repository URL.
+
+### Step 2: Create a Virtual Environment
 
 ```powershell
 python -m venv venv
 ```
 
-### 4. Activate the virtual environment
+Activate it:
 
 ```powershell
 .\venv\Scripts\Activate.ps1
 ```
 
-### 5. Install dependencies
+### Step 3: Install Dependencies
 
 ```powershell
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-### 6. Configure environment variables
+### Step 4: Set Up the Northwind Database
 
-Create a `.env` file in the project root directory. Add your own MySQL connection details:
+The Northwind database dump is not included in this repository.
+
+Obtain a compatible MySQL version of the Northwind sample database separately.
+
+Using MySQL Workbench:
+
+1. Open MySQL Workbench.
+2. Connect to your local MySQL server.
+3. Obtain a compatible Northwind `.sql` database dump.
+4. If necessary, create a schema named `northwind`.
+5. Navigate to **Server → Data Import**.
+6. Select **Import from Self-Contained File**.
+7. Browse and select the Northwind SQL dump.
+8. Select `northwind` as the target schema if prompted.
+9. Click **Start Import**.
+10. Refresh the Schemas panel and verify that the tables have been imported.
+
+The application expects the database name to be `northwind`.
+
+### Step 5: Configure Environment Variables
+
+Create a `.env` file in the project root directory, alongside `run.py`.
+
+Add your MySQL connection details:
 
 ```env
-DATABASE_URL=mysql+pymysql://username:password@localhost/northwind
+DATABASE_URL=mysql+pymysql://YOUR_USERNAME:YOUR_PASSWORD@localhost/northwind
 ```
 
-Replace `username` and `password` with your MySQL credentials. Do not commit the `.env` file or share database passwords.
+Replace the placeholders with your own MySQL username and password.
 
-### 7. Run the application
+If your password contains URL-reserved characters, URL-encode those characters in the connection string.
+
+**Important:** Do not upload your `.env` file or expose your database credentials on GitHub.
+
+### Step 6: Start the Flask Application
 
 ```powershell
 python run.py
 ```
 
-The API will be available locally at:
+The application will run locally at:
 
 `http://127.0.0.1:5000`
 
-## Running Tests
+## Verify the API
 
-From the project root, run:
+Keep the Flask application running.
+
+Open another PowerShell window and execute the following requests.
+
+### Retrieve All Customers
+
+```powershell
+Invoke-RestMethod "http://127.0.0.1:5000/api/customers/"
+```
+
+### Retrieve Customer by ID
+
+```powershell
+Invoke-RestMethod "http://127.0.0.1:5000/api/customers/1"
+```
+
+### Retrieve All Products
+
+```powershell
+Invoke-RestMethod "http://127.0.0.1:5000/api/products/"
+```
+
+### Retrieve All Orders
+
+```powershell
+Invoke-RestMethod "http://127.0.0.1:5000/api/orders/"
+```
+
+### Retrieve Customer Order History
+
+```powershell
+Invoke-RestMethod "http://127.0.0.1:5000/api/customers/1/order-history" | ConvertTo-Json -Depth 10
+```
+
+Successful requests should return JSON responses containing the requested database records.
+
+POST and PUT endpoints can be tested by sending JSON request bodies containing the required fields.
+
+## Unit Testing
+
+The project uses Pytest and mocking to test controller behavior independently of actual database operations.
+
+Run the test suite:
 
 ```powershell
 pytest -v
 ```
 
-The controller tests use mocks to isolate controller behavior from actual database operations.
+The current test suite contains 8 unit tests covering customer, product, and order controller behavior.
+
+## GitHub Actions - Continuous Integration
+
+GitHub Actions is configured to automatically execute unit tests whenever code is pushed to the `main` branch or a pull request targets `main`.
+
+### CI Workflow
+
+```text
+       Developer Pushes Code
+                |
+                v
+       GitHub Actions Starts
+                |
+                v
+       Checkout Repository
+                |
+                v
+         Set Up Python
+                |
+                v
+       Install Dependencies
+                |
+                v
+          Run Pytest
+                |
+          +-----+-----+
+          |           |
+          v           v
+       SUCCESS      FAILURE
+       Green Tick   Red Cross
+```
+
+The workflow uses a temporary SQLite database configuration for automated testing and does not require a running MySQL server.
 
 ## Logging
 
-Application logs are written to:
+Application logs are maintained in:
 
 ```text
 logs/app.log
@@ -200,8 +315,10 @@ logs/app.log
 
 ## Version Control
 
-The project uses Git for version control and GitHub for repository hosting.
+Git is used for version control, and GitHub hosts the source code.
+
+The repository includes a GitHub Actions workflow for automated unit testing.
 
 ---
 
-**Built with Python, Flask, MySQL, and SQLAlchemy.**
+**Developed using Python, Flask, MySQL, and SQLAlchemy.**
