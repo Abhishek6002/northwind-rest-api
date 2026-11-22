@@ -1,0 +1,49 @@
+from app.extensions import db
+
+
+class OrderDetail(db.Model):
+    __tablename__ = "order_details"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    order_id = db.Column(
+        db.Integer,
+        db.ForeignKey("orders.id"),
+        nullable=False
+    )
+
+    product_id = db.Column(
+        db.Integer,
+        db.ForeignKey("products.id")
+    )
+
+    quantity = db.Column(
+        db.Numeric(18, 4),
+        nullable=False
+    )
+
+    unit_price = db.Column(db.Numeric(19, 4))
+
+    discount = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    status_id = db.Column(
+        db.Integer,
+        db.ForeignKey("order_details_status.id")
+    )
+
+    date_allocated = db.Column(db.DateTime)
+    purchase_order_id = db.Column(db.Integer)
+    inventory_id = db.Column(db.Integer)
+
+    order = db.relationship(
+        "Order",
+        back_populates="order_details"
+    )
+
+    product = db.relationship(
+        "Product",
+        back_populates="order_details"
+    )
